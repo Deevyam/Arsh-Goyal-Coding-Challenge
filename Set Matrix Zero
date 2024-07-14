@@ -1,0 +1,88 @@
+/*
+73. Set Matrix Zeroes
+Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+
+You must do it in place.
+Example 1:
+Input: matrix = [[1,1,1],[1,0,1],[1,1,1]]
+Output: [[1,0,1],[0,0,0],[1,0,1]]
+
+Example 2:
+Input: matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
+ 
+
+Constraints:
+
+m == matrix.length
+n == matrix[0].length
+1 <= m, n <= 200
+-231 <= matrix[i][j] <= 231 - 1
+ 
+
+Follow up:
+
+A straightforward solution using O(mn) space is probably a bad idea.
+A simple improvement uses O(m + n) space, but still not the best solution.
+Could you devise a constant space solution?
+*/
+
+Soln 1 : HashSet approch
+ public void setZeroes(int[][] matrix) {
+        HashSet<Integer> row=new HashSet<>();
+        HashSet<Integer> col=new HashSet<>();
+        for(int i=0;i<matrix.length;i++){
+            for(int j=0;j<matrix[0].length;j++){
+                if(matrix[i][j]==0){
+                    row.add(i);
+                    col.add(j);
+                }
+            }
+        }
+            for(int i=0;i<matrix.length;i++){
+                for(int j=0;j<matrix[0].length;j++){
+                    if(row.contains(i) || col.contains(j)){
+                        matrix[i][j]=0;
+                    }
+                }
+            }
+    }
+
+Soln 2 Dfs
+
+ void dfs(int i,int j,int arr[][],boolean vis[][]){
+         int n = arr.length;
+        int m = arr[0].length;
+        if (i < 0 || j < 0 || i >= n || j >= m || vis[i][j]) {
+            return;
+        }
+        vis[i][j] = true;
+        for (int k = 0; k < n; k++) {
+            if (!vis[k][j] && arr[k][j] != 0) {
+                vis[k][j] = true;
+                arr[k][j] = 0;
+            }
+        }
+        for (int k = 0; k < m; k++) {
+            if (!vis[i][k] && arr[i][k] != 0) {
+                vis[i][k] = true;
+                arr[i][k] = 0;
+            }
+        }
+        dfs(i + 1, j, arr, vis);
+        dfs(i - 1, j, arr, vis);
+        dfs(i, j + 1, arr, vis);
+        dfs(i, j - 1, arr, vis);
+    }
+    public void setZeroes(int[][] matrix) {
+        int n=matrix.length;
+        int m=matrix[0].length;
+        boolean vis[][]=new boolean[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]==0 && !vis[i][j]){
+                    dfs(i,j,matrix,vis);
+                }
+            }
+        }
+    }
