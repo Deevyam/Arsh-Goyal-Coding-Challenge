@@ -40,7 +40,7 @@ class Solution {
              int left=i;
             while(left < n - 1 && colors.charAt(left) == colors.charAt(left + 1)){
             cnt += Math.min(neededTime[left],neededTime[left+1]);
-         neededTime[left + 1] = Math.max(neededTime[left], neededTime[left + 1]);
+         neededTime[left + 1] = Math.max(neededTime[left], neededTime[left + 1]);//[Important] isme jo bhi dono mai se badha hai vo assign kardo 
                     left++;
             }
             i=left;
